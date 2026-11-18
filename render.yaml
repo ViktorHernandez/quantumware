@@ -1,8 +1,9 @@
 services:
+
   - type: web
     name: quantumware-app-principal
     runtime: node
-    region: oregon
+    region: virginia
     plan: free
     rootDir: app-principal
     buildCommand: npm ci && npm --prefix web ci && npm --prefix web run build && npm run build
@@ -42,13 +43,13 @@ services:
       - key: BREVO_SENDER_NAME
         value: QuantumWare
       - key: CORREO_WORKER_ACTIVO
-        value: "false"
+        value: "true"
       - key: SEGUIMIENTO_DEMO_ACTIVO
         value: "false"
       - key: PEDIDO_AVANCE_AUTOMATICO
         value: "true"
       - key: PEDIDO_AVANCE_SEGUNDOS
-        sync: false
+        value: "120"
       - key: APP_WEB_URL
         sync: false
       - key: VITE_API_BASE_URL
@@ -63,7 +64,7 @@ services:
   - type: web
     name: quantumware-cliente-atacante
     runtime: node
-    region: oregon
+    region: virginia
     plan: free
     rootDir: cliente-atacante
     buildCommand: npm ci && npm --prefix web ci && npm --prefix web run build && npm run build
@@ -96,10 +97,10 @@ services:
   - type: cron
     name: quantumware-procesador
     runtime: node
-    region: oregon
+    region: virginia
     plan: starter
     rootDir: app-principal
-    schedule: "*/10 * * * *"
+    schedule: "*/1 * * * *"
     buildCommand: npm ci && npm run build
     startCommand: node dist/procesar-transiciones.js
     envVars:
@@ -112,7 +113,7 @@ services:
       - key: PEDIDO_AVANCE_AUTOMATICO
         value: "true"
       - key: PEDIDO_AVANCE_SEGUNDOS
-        sync: false
+        value: "120"
       - key: CORREO_WORKER_ACTIVO
         value: "false"
       - key: BREVO_API_KEY
