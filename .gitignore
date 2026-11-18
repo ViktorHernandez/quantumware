@@ -1,0 +1,17 @@
+# Variables de entorno y secretos
+.env
+.env.*
+!.env.example
+
+# Dependencias y compilaciones
+node_modules/
+dist/
+build/
+coverage/
+
+# Artefactos locales
+*.log
+evidencias/
+.vite/
+*.tsbuildinfo
+.DS_Store

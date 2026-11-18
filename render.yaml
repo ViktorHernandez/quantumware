@@ -1,0 +1,127 @@
+services:
+  - type: web
+    name: quantumware-app-principal
+    runtime: node
+    region: oregon
+    plan: free
+    rootDir: app-principal
+    buildCommand: npm ci && npm --prefix web ci && npm --prefix web run build && npm run build
+    startCommand: node dist/main.js
+    healthCheckPath: /salud
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: VULN_MODE
+        value: corregido
+      - key: REGISTRO_ABIERTO
+        value: "false"
+      - key: MFA_ADMIN_OBLIGATORIO
+        value: "false"
+      - key: ADMIN_EMAILS
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: DATABASE_SSL
+        value: "true"
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_JWKS_URL
+        sync: false
+      - key: SUPABASE_ISSUER
+        sync: false
+      - key: SUPABASE_AUDIENCE
+        value: authenticated
+      - key: SUPABASE_PUBLISHABLE_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: BREVO_API_KEY
+        sync: false
+      - key: BREVO_SENDER_EMAIL
+        sync: false
+      - key: BREVO_SENDER_NAME
+        value: QuantumWare
+      - key: CORREO_WORKER_ACTIVO
+        value: "false"
+      - key: SEGUIMIENTO_DEMO_ACTIVO
+        value: "false"
+      - key: PEDIDO_AVANCE_AUTOMATICO
+        value: "true"
+      - key: PEDIDO_AVANCE_SEGUNDOS
+        sync: false
+      - key: APP_WEB_URL
+        sync: false
+      - key: VITE_API_BASE_URL
+        value: ""
+      - key: VITE_SUPABASE_URL
+        sync: false
+      - key: VITE_SUPABASE_PUBLISHABLE_KEY
+        sync: false
+      - key: VITE_REGISTRO_ABIERTO
+        value: "false"
+
+  - type: web
+    name: quantumware-cliente-atacante
+    runtime: node
+    region: oregon
+    plan: free
+    rootDir: cliente-atacante
+    buildCommand: npm ci && npm --prefix web ci && npm --prefix web run build && npm run build
+    startCommand: node dist/main.js
+    healthCheckPath: /api/salud
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PERMITIR_EXPLOTACION
+        value: "false"
+      - key: TARGET_BASE_URL
+        sync: false
+      - key: TARGET_ALLOWLIST
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_PUBLISHABLE_KEY
+        sync: false
+      - key: TEST_ADMIN_EMAIL
+        sync: false
+      - key: TEST_ADMIN_PASSWORD
+        sync: false
+      - key: TEST_CLIENT_EMAIL
+        sync: false
+      - key: TEST_CLIENT_PASSWORD
+        sync: false
+      - key: EVIDENCE_DIR
+        value: ./evidencias
+
+  - type: cron
+    name: quantumware-procesador
+    runtime: node
+    region: oregon
+    plan: starter
+    rootDir: app-principal
+    schedule: "*/10 * * * *"
+    buildCommand: npm ci && npm run build
+    startCommand: node dist/procesar-transiciones.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: DATABASE_SSL
+        value: "true"
+      - key: PEDIDO_AVANCE_AUTOMATICO
+        value: "true"
+      - key: PEDIDO_AVANCE_SEGUNDOS
+        sync: false
+      - key: CORREO_WORKER_ACTIVO
+        value: "false"
+      - key: BREVO_API_KEY
+        sync: false
+      - key: BREVO_SENDER_EMAIL
+        sync: false
+      - key: BREVO_SENDER_NAME
+        value: QuantumWare
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
