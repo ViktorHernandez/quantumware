@@ -5,7 +5,7 @@ services:
     region: virginia
     plan: free
     rootDir: app-principal
-    buildCommand: npm ci && npm --prefix web ci && npm --prefix web run build && npm run build
+    buildCommand: npm ci --include=dev && npm --prefix web ci --include=dev && npm --prefix web run build && npm run build
     startCommand: node dist/main.js
     healthCheckPath: /salud
     envVars:
@@ -66,7 +66,7 @@ services:
     region: virginia
     plan: free
     rootDir: cliente-atacante
-    buildCommand: npm ci && npm --prefix web ci && npm --prefix web run build && npm run build
+    buildCommand: npm ci --include=dev && npm --prefix web ci --include=dev && npm --prefix web run build && npm run build
     startCommand: node dist/main.js
     healthCheckPath: /api/salud
     envVars:
