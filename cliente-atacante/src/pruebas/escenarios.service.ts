@@ -145,13 +145,22 @@ export class EscenariosService {
       throw new NotFoundException('Escenario no definido.');
     }
 
-    if (def.tipo === 'explotacion' && !this.permitirExplotacion()) {
+    const modo = await this.motor.modoObjetivo();
+    const demostracionSeguraPublica =
+      !this.permitirExplotacion() &&
+      modo === 'corregido' &&
+      (id === 'PE-01' || id === 'PE-02');
+
+    if (
+      def.tipo === 'explotacion' &&
+      !this.permitirExplotacion() &&
+      !demostracionSeguraPublica
+    ) {
       throw new ForbiddenException(
-        'Las pruebas de explotación (PE-01 y PE-02) solo se ejecutan en el laboratorio local. La demostración pública permanece en modo corregido y protegida.',
+        'Este escenario requiere el laboratorio local. En el despliegue solo se permiten PE-01 y PE-02 contra el objetivo autorizado cuando confirma modo corregido.',
       );
     }
 
-    const modo = await this.motor.modoObjetivo();
     const { status: statusEsperado, texto: esperado } = this.expectativa(
       def,
       modo,

@@ -70,9 +70,10 @@ export function PanelLab() {
       </div>
 
       <Alert color="red" icon={<IconAlertTriangle size={18} />}>
-        Herramienta de uso exclusivamente académico. Las solicitudes se dirigen
-        únicamente a la aplicación principal local de QuantumWare con datos
-        ficticios. No debe utilizarse contra sistemas de terceros.
+        Herramienta de uso académico. En el despliegue público, las pruebas
+        disponibles se limitan a solicitudes controladas contra la aplicación
+        QuantumWare autorizada y en modo corregido. No se habilita el modo
+        vulnerable ni se permiten pruebas contra sistemas de terceros.
       </Alert>
 
       <Grid>

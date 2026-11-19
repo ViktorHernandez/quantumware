@@ -144,14 +144,23 @@ export class UsuariosService {
         'Ya existe una cuenta registrada con este correo.',
       );
     }
-    const origen = this.config.get<string>(
+    const origenConfigurado = this.config.get<string>(
       'APP_WEB_URL',
       'http://localhost:5173',
     );
-    const resultado = await this.admin.invitar(
-      email,
-      `${origen.replace(/\/+$/, '')}/aceptar-invitacion`,
-    );
+    let destinoInvitacion: string;
+    try {
+      const origen = new URL(origenConfigurado);
+      if (origen.protocol !== 'https:' && origen.hostname !== 'localhost' && origen.hostname !== '127.0.0.1') {
+        throw new Error('APP_WEB_URL debe usar HTTPS fuera del entorno local.');
+      }
+      destinoInvitacion = new URL('/aceptar-invitacion?flujo=invitacion', origen).toString();
+    } catch {
+      throw new ServiceUnavailableException(
+        'APP_WEB_URL no es válida. Configura la URL pública raíz de QuantumWare, sin /login ni otras rutas.',
+      );
+    }
+    const resultado = await this.admin.invitar(email, destinoInvitacion);
     if (!resultado.ok) {
       throw new ServiceUnavailableException(
         `No se pudo enviar la invitación: ${resultado.mensaje}`,

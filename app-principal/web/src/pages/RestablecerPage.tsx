@@ -51,7 +51,7 @@ function traducirErrorEnlace(mensaje: string): string {
 }
 
 export function RestablecerPage() {
-  const { session, recuperacion, cambiarContrasena } = useAuth();
+  const { session, recuperacion, cambiarContrasena, recargarPerfil } = useAuth();
   const navigate = useNavigate();
   const [senales] = useState<SenalesEnlace>(leerSenalesIniciales);
   const [password, setPassword] = useState('');
@@ -110,6 +110,7 @@ export function RestablecerPage() {
     const r = await cambiarContrasena(password);
     setEnviando(false);
     if (r.ok) {
+      await recargarPerfil();
       setListo(true);
       setTimeout(() => navigate('/u/panel', { replace: true }), 1800);
       return;

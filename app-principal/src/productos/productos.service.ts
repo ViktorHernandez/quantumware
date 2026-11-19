@@ -98,8 +98,11 @@ export class ProductosService implements OnModuleInit {
           `Se asociaron ${asignadas} imagen(es) de catálogo a productos que no la tenían.`,
         );
       }
-    } catch {
-      return;
+    } catch (error) {
+      const detalle = error instanceof Error ? error.message : 'error desconocido';
+      this.registro.warn(
+        `No se pudieron completar las imágenes de catálogo al iniciar: ${detalle}`,
+      );
     }
   }
   constructor(

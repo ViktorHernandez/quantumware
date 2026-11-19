@@ -65,8 +65,9 @@ function RedireccionAuth() {
     }
     const tipo = arranqueTipo();
     const conCodigo = arranqueTieneCodigo();
+    const flujo = new URLSearchParams(window.location.search).get('flujo');
 
-    const esRecuperacion = recuperacion || tipo === 'recovery';
+    const esRecuperacion = recuperacion || tipo === 'recovery' || flujo === 'recuperacion';
     if (esRecuperacion && ubicacion.pathname !== '/restablecer-contrasena') {
       redirigido.current = true;
       navigate('/restablecer-contrasena', { replace: true });
@@ -74,7 +75,7 @@ function RedireccionAuth() {
     }
 
     const invitado = Boolean(session?.user?.invited_at);
-    const esInvitacion = tipo === 'invite' || (conCodigo && invitado);
+    const esInvitacion = tipo === 'invite' || flujo === 'invitacion' || (conCodigo && invitado);
     if (
       esInvitacion &&
       !esRecuperacion &&

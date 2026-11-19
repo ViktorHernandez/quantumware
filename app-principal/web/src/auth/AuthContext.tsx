@@ -55,41 +55,85 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     let activo = true;
-    supabase.auth.getSession().then(async ({ data }) => {
-      if (!activo) {
-        return;
-      }
-      setSession(data.session);
-      if (data.session) {
-        await evaluarMfa();
-        await cargarPerfil();
-      } else {
-        setMfaPendiente(false);
-      }
-      setCargando(false);
-    });
+
+    const flujoActual = () => {
+      const flujo = new URLSearchParams(window.location.search).get('flujo');
+      return {
+        invitacion:
+          window.location.pathname === '/aceptar-invitacion' ||
+          flujo === 'invitacion',
+        recuperacion:
+          window.location.pathname === '/restablecer-contrasena' ||
+          flujo === 'recuperacion',
+      };
+    };
+
+    // La suscripción se registra antes de consultar la sesión para no perder
+    // PASSWORD_RECOVERY durante la inicialización del callback de Supabase.
     const { data: sub } = supabase.auth.onAuthStateChange((evento, nueva) => {
+      if (!activo) return;
       setSession(nueva);
+
       if (evento === 'PASSWORD_RECOVERY') {
         setRecuperacion(true);
         setMfaPendiente(false);
+        setCargando(false);
         return;
       }
+
       if (!nueva) {
         setPerfil(null);
         setMfaPendiente(false);
+        setRecuperacion(false);
+        setCargando(false);
         return;
       }
+
+      const flujo = flujoActual();
+      if (flujo.recuperacion) {
+        setRecuperacion(true);
+        setMfaPendiente(false);
+        setCargando(false);
+        return;
+      }
+      if (flujo.invitacion || Boolean(nueva.user.invited_at)) {
+        // No consultar /perfil todavía: ese endpoint acepta la invitación y
+        // asigna el rol. Debe ocurrir después de que la persona cree su clave.
+        setMfaPendiente(false);
+        setCargando(false);
+        return;
+      }
+
       setTimeout(() => {
-        if (!activo) {
-          return;
-        }
+        if (!activo) return;
         void evaluarMfa();
         if (evento === 'SIGNED_IN' || evento === 'USER_UPDATED') {
           void cargarPerfil();
         }
       }, 0);
     });
+
+    void supabase.auth.getSession().then(async ({ data }) => {
+      if (!activo) return;
+      const actual = data.session;
+      setSession(actual);
+      if (actual) {
+        const flujo = flujoActual();
+        if (flujo.recuperacion) {
+          setRecuperacion(true);
+          setMfaPendiente(false);
+        } else if (flujo.invitacion || Boolean(actual.user.invited_at)) {
+          setMfaPendiente(false);
+        } else {
+          await evaluarMfa();
+          await cargarPerfil();
+        }
+      } else {
+        setMfaPendiente(false);
+      }
+      if (activo) setCargando(false);
+    });
+
     return () => {
       activo = false;
       sub.subscription.unsubscribe();
@@ -149,16 +193,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       },
       recargarPerfil: cargarPerfil,
       enviarRecuperacion: async (email) => {
-        const base = (
-          import.meta.env.VITE_APP_URL ?? window.location.origin
-        ).replace(/\/+$/, '');
+        // El origen debe ser exactamente el navegador actual: usar una URL
+        // compilada de otro entorno rompe la verificación PKCE de Supabase.
+        const base = window.location.origin.replace(/\/+$/, '');
         try {
           window.localStorage.setItem('quantumware-origen-recuperacion', base);
         } catch {
           /* almacenamiento no disponible */
         }
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
-          redirectTo: `${base}/restablecer-contrasena`,
+          redirectTo: `${base}/restablecer-contrasena?flujo=recuperacion`,
         });
         if (error) {
           if (error.status === 429) {

@@ -204,13 +204,18 @@ export function Escenarios({ tipo }: { tipo?: string }) {
         <Stack key={g.tipo} gap="sm">
           {!tipo && <Title order={4}>{g.titulo}</Title>}
           {g.tipo === 'explotacion' && !config.permitirExplotacion ? (
-            <Alert color="orange" icon={<IconInfoCircle size={18} />}>
-              Las pruebas de explotación (PE-01 inyección SQL y PE-02 omisión de
-              validación) solo se ejecutan en el laboratorio local, en modo
-              vulnerable y con datos ficticios. Esta demostración pública
-              permanece en modo corregido y protegida, por lo que estos
-              escenarios están deshabilitados aquí.
-            </Alert>
+            <>
+              <Alert color="teal" icon={<IconInfoCircle size={18} />}>
+                Demostración pública segura: PE-01 y PE-02 envían casos de prueba
+                controlados únicamente al objetivo QuantumWare autorizado. El
+                servidor debe confirmar el modo corregido; la inyección se trata
+                como texto y la cantidad fuera de límite se rechaza. El despliegue
+                no activa el modo vulnerable ni modifica datos con estas pruebas.
+              </Alert>
+              {config.escenarios
+                .filter((e) => e.id === 'PE-01' || e.id === 'PE-02')
+                .map((e) => <Tarjeta key={e.id} def={e} />)}
+            </>
           ) : (
             config.escenarios
               .filter((e) => e.tipo === g.tipo)
