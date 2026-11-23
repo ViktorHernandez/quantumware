@@ -1,0 +1,67 @@
+{
+  "escenario": "PE-02",
+  "titulo": "Omisión de la validación del lado del cliente",
+  "ejecutadoEn": "2026-11-22T06:30:42.016Z",
+  "objetivo": "http://localhost:3000",
+  "vulnMode": "corregido",
+  "request": {
+    "metodo": "POST",
+    "url": "http://localhost:3000/pedidos",
+    "envioToken": true,
+    "origenToken": "cliente",
+    "tokenEnmascarado": "eyJhbGciOi…bKu18Q [enmascarado]",
+    "tokenExpiradoAlEnviar": false,
+    "cabeceras": {
+      "Authorization": "Bearer eyJhbGciOi…bKu18Q [enmascarado]",
+      "Content-Type": "application/json"
+    },
+    "cuerpo": {
+      "items": [
+        {
+          "producto_id": "9fdd1a8d-5ccb-4674-ab32-45a8ed7f5ddd",
+          "cantidad": 99999
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": 400,
+    "tiempoMs": 38,
+    "cuerpo": {
+      "statusCode": 400,
+      "error": "Bad Request",
+      "message": "La cantidad por producto no puede superar 10 unidades."
+    }
+  },
+  "statusEsperado": 400,
+  "esperado": "Corregido: 400 y el pedido no se registra.",
+  "cumple": true,
+  "observacion": "El servidor respondió HTTP 400 a una solicitud con token, que coincide con el resultado esperado (400).",
+  "restablecimiento": "En la versión vulnerable se elimina el pedido de prueba con limpiar-pedidos-prueba.ps1.",
+  "sesiones": {
+    "cliente": {
+      "email": "smmy627@gmail.com",
+      "capturadoEn": "2026-11-22T06:27:38.175Z",
+      "expiraEn": "2026-11-22T07:27:38.000Z",
+      "expirado": false,
+      "aal": "aal1",
+      "tokenEnmascarado": "eyJhbGciOi…bKu18Q [enmascarado]"
+    },
+    "expirado": {
+      "email": "smmy627@gmail.com",
+      "capturadoEn": "2026-11-22T06:27:38.175Z",
+      "expiraEn": "2026-11-22T07:27:38.000Z",
+      "expirado": false,
+      "aal": "aal1",
+      "tokenEnmascarado": "eyJhbGciOi…bKu18Q [enmascarado]"
+    },
+    "admin": {
+      "email": "viktorrhv24@gmail.com",
+      "capturadoEn": "2026-11-22T06:28:12.111Z",
+      "expiraEn": "2026-11-22T07:28:12.000Z",
+      "expirado": false,
+      "aal": "aal2",
+      "tokenEnmascarado": "eyJhbGciOi…d2Qjqg [enmascarado]"
+    }
+  }
+}

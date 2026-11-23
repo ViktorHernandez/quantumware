@@ -1,0 +1,54 @@
+{
+  "escenario": "PE-01",
+  "titulo": "Explotación de la inyección SQL",
+  "ejecutadoEn": "2026-11-22T06:28:23.047Z",
+  "objetivo": "http://localhost:3000",
+  "vulnMode": "corregido",
+  "request": {
+    "metodo": "GET",
+    "url": "http://localhost:3000/productos/buscar?q=%%27%20OR%20%271%27=%271%27%20--",
+    "envioToken": true,
+    "origenToken": "cliente",
+    "tokenEnmascarado": "eyJhbGciOi…bKu18Q [enmascarado]",
+    "tokenExpiradoAlEnviar": false,
+    "cabeceras": {
+      "Authorization": "Bearer eyJhbGciOi…bKu18Q [enmascarado]"
+    }
+  },
+  "response": {
+    "status": 200,
+    "tiempoMs": 15,
+    "cuerpo": []
+  },
+  "statusEsperado": 200,
+  "esperado": "Corregido: 200 sin registros adicionales.",
+  "cumple": true,
+  "observacion": "La respuesta contiene 0 registro(s): la consulta parametrizada trata la carga como texto literal.",
+  "restablecimiento": "No modifica datos; solo se alterna la versión del backend para repetir.",
+  "sesiones": {
+    "cliente": {
+      "email": "smmy627@gmail.com",
+      "capturadoEn": "2026-11-22T06:27:38.175Z",
+      "expiraEn": "2026-11-22T07:27:38.000Z",
+      "expirado": false,
+      "aal": "aal1",
+      "tokenEnmascarado": "eyJhbGciOi…bKu18Q [enmascarado]"
+    },
+    "expirado": {
+      "email": "smmy627@gmail.com",
+      "capturadoEn": "2026-11-22T06:27:38.175Z",
+      "expiraEn": "2026-11-22T07:27:38.000Z",
+      "expirado": false,
+      "aal": "aal1",
+      "tokenEnmascarado": "eyJhbGciOi…bKu18Q [enmascarado]"
+    },
+    "admin": {
+      "email": "viktorrhv24@gmail.com",
+      "capturadoEn": "2026-11-22T06:28:12.111Z",
+      "expiraEn": "2026-11-22T07:28:12.000Z",
+      "expirado": false,
+      "aal": "aal2",
+      "tokenEnmascarado": "eyJhbGciOi…d2Qjqg [enmascarado]"
+    }
+  }
+}

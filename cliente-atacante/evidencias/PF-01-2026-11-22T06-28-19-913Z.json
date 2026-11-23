@@ -1,0 +1,77 @@
+{
+  "escenario": "PF-01",
+  "titulo": "Funcionamiento normal de la búsqueda",
+  "ejecutadoEn": "2026-11-22T06:28:19.912Z",
+  "objetivo": "http://localhost:3000",
+  "vulnMode": "corregido",
+  "request": {
+    "metodo": "GET",
+    "url": "http://localhost:3000/productos/buscar?q=teclado",
+    "envioToken": true,
+    "origenToken": "cliente",
+    "tokenEnmascarado": "eyJhbGciOi…bKu18Q [enmascarado]",
+    "tokenExpiradoAlEnviar": false,
+    "cabeceras": {
+      "Authorization": "Bearer eyJhbGciOi…bKu18Q [enmascarado]"
+    }
+  },
+  "response": {
+    "status": 200,
+    "tiempoMs": 1036,
+    "cuerpo": [
+      {
+        "id": "85686b98-acdb-4525-b7bb-b77d055258f6",
+        "nombre": "Teclado compacto ficticio",
+        "descripcion": "Teclado 60% de laboratorio para pruebas de QuantumWare",
+        "categoria": "Periféricos",
+        "precio": "520.00",
+        "stock": 12,
+        "stock_minimo": 5,
+        "estado": "activo",
+        "imagen_url": "/media/productos/teclado-compacto.webp"
+      },
+      {
+        "id": "0a02c118-a80e-4774-9975-d0f1159971a0",
+        "nombre": "Teclado mecánico ficticio",
+        "descripcion": "Teclado mecánico de laboratorio para pruebas de QuantumWare",
+        "categoria": "Periféricos",
+        "precio": "450.00",
+        "stock": 15,
+        "stock_minimo": 5,
+        "estado": "activo",
+        "imagen_url": "/media/productos/teclado-mecanico.webp"
+      }
+    ]
+  },
+  "statusEsperado": 200,
+  "esperado": "Responde 200 y devuelve únicamente los productos cuyo nombre coincide con el término.",
+  "cumple": true,
+  "observacion": "El servidor respondió HTTP 200 a una solicitud con token, que coincide con el resultado esperado (200).",
+  "restablecimiento": "No modifica datos; no requiere restablecimiento.",
+  "sesiones": {
+    "cliente": {
+      "email": "smmy627@gmail.com",
+      "capturadoEn": "2026-11-22T06:27:38.175Z",
+      "expiraEn": "2026-11-22T07:27:38.000Z",
+      "expirado": false,
+      "aal": "aal1",
+      "tokenEnmascarado": "eyJhbGciOi…bKu18Q [enmascarado]"
+    },
+    "expirado": {
+      "email": "smmy627@gmail.com",
+      "capturadoEn": "2026-11-22T06:27:38.175Z",
+      "expiraEn": "2026-11-22T07:27:38.000Z",
+      "expirado": false,
+      "aal": "aal1",
+      "tokenEnmascarado": "eyJhbGciOi…bKu18Q [enmascarado]"
+    },
+    "admin": {
+      "email": "viktorrhv24@gmail.com",
+      "capturadoEn": "2026-11-22T06:28:12.111Z",
+      "expiraEn": "2026-11-22T07:28:12.000Z",
+      "expirado": false,
+      "aal": "aal2",
+      "tokenEnmascarado": "eyJhbGciOi…d2Qjqg [enmascarado]"
+    }
+  }
+}

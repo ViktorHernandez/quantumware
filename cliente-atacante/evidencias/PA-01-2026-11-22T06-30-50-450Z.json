@@ -1,0 +1,72 @@
+{
+  "escenario": "PA-01",
+  "titulo": "Acceso con token válido y permisos suficientes",
+  "ejecutadoEn": "2026-11-22T06:30:50.448Z",
+  "objetivo": "http://localhost:3000",
+  "vulnMode": "corregido",
+  "request": {
+    "metodo": "POST",
+    "url": "http://localhost:3000/productos",
+    "envioToken": true,
+    "origenToken": "admin",
+    "tokenEnmascarado": "eyJhbGciOi…d2Qjqg [enmascarado]",
+    "tokenExpiradoAlEnviar": false,
+    "cabeceras": {
+      "Authorization": "Bearer eyJhbGciOi…d2Qjqg [enmascarado]",
+      "Content-Type": "application/json"
+    },
+    "cuerpo": {
+      "nombre": "Producto de prueba (laboratorio)",
+      "descripcion": "Producto ficticio creado durante las pruebas de autorización de QuantumWare.",
+      "categoria": "Pruebas",
+      "precio": 100,
+      "stock": 1
+    }
+  },
+  "response": {
+    "status": 201,
+    "tiempoMs": 73,
+    "cuerpo": {
+      "id": "32cde274-6b28-4250-bc79-2e0635826151",
+      "nombre": "Producto de prueba (laboratorio)",
+      "descripcion": "Producto ficticio creado durante las pruebas de autorización de QuantumWare.",
+      "categoria": "Pruebas",
+      "precio": "100.00",
+      "stock": 1,
+      "stock_minimo": 0,
+      "estado": "activo",
+      "imagen_url": null
+    }
+  },
+  "statusEsperado": 201,
+  "esperado": "Responde 201 y ejecuta la operación.",
+  "cumple": true,
+  "observacion": "El servidor respondió HTTP 201 a una solicitud con token, que coincide con el resultado esperado (201).",
+  "restablecimiento": "Producto de prueba eliminado (respuesta 200).",
+  "sesiones": {
+    "cliente": {
+      "email": "smmy627@gmail.com",
+      "capturadoEn": "2026-11-22T06:27:38.175Z",
+      "expiraEn": "2026-11-22T07:27:38.000Z",
+      "expirado": false,
+      "aal": "aal1",
+      "tokenEnmascarado": "eyJhbGciOi…bKu18Q [enmascarado]"
+    },
+    "expirado": {
+      "email": "smmy627@gmail.com",
+      "capturadoEn": "2026-11-22T06:27:38.175Z",
+      "expiraEn": "2026-11-22T07:27:38.000Z",
+      "expirado": false,
+      "aal": "aal1",
+      "tokenEnmascarado": "eyJhbGciOi…bKu18Q [enmascarado]"
+    },
+    "admin": {
+      "email": "viktorrhv24@gmail.com",
+      "capturadoEn": "2026-11-22T06:28:12.111Z",
+      "expiraEn": "2026-11-22T07:28:12.000Z",
+      "expirado": false,
+      "aal": "aal2",
+      "tokenEnmascarado": "eyJhbGciOi…d2Qjqg [enmascarado]"
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "escenario": "PE-04",
+  "titulo": "Resistencia a intentos repetidos de autenticación",
+  "ejecutadoEn": "2026-11-22T06:30:46.041Z",
+  "objetivo": "http://localhost:3000",
+  "vulnMode": "corregido",
+  "request": {
+    "metodo": "POST",
+    "url": "http://localhost:3000/lab/resistencia-autenticacion",
+    "envioToken": true,
+    "origenToken": "cliente",
+    "tokenEnmascarado": "eyJhbGciOi…bKu18Q [enmascarado]",
+    "tokenExpiradoAlEnviar": false,
+    "cabeceras": {
+      "Authorization": "Bearer eyJhbGciOi…bKu18Q [enmascarado]",
+      "Content-Type": "application/json"
+    },
+    "cuerpo": {
+      "intentos": 12
+    }
+  },
+  "response": {
+    "status": 200,
+    "tiempoMs": 20,
+    "cuerpo": {
+      "modo": "corregido",
+      "limiteActivo": true,
+      "intentosSolicitados": 12,
+      "intentosProcesados": 5,
+      "intentosRechazadosPorCredencial": 5,
+      "bloqueadoEn": 6,
+      "observacion": "El mecanismo de protección bloqueó los intentos a partir del intento 6, tras 5 fallos. La autenticación resiste intentos repetidos."
+    }
+  },
+  "statusEsperado": 200,
+  "esperado": "Corregido: bloquea los intentos a partir del umbral.",
+  "cumple": true,
+  "observacion": "Con el límite activo el servidor procesó 5 de 12 intento(s) y bloqueó a partir del intento 6: la protección detuvo la secuencia antes de agotarla.",
+  "restablecimiento": "No modifica datos: es una simulación en memoria. No requiere restablecimiento.",
+  "sesiones": {
+    "cliente": {
+      "email": "smmy627@gmail.com",
+      "capturadoEn": "2026-11-22T06:27:38.175Z",
+      "expiraEn": "2026-11-22T07:27:38.000Z",
+      "expirado": false,
+      "aal": "aal1",
+      "tokenEnmascarado": "eyJhbGciOi…bKu18Q [enmascarado]"
+    },
+    "expirado": {
+      "email": "smmy627@gmail.com",
+      "capturadoEn": "2026-11-22T06:27:38.175Z",
+      "expiraEn": "2026-11-22T07:27:38.000Z",
+      "expirado": false,
+      "aal": "aal1",
+      "tokenEnmascarado": "eyJhbGciOi…bKu18Q [enmascarado]"
+    },
+    "admin": {
+      "email": "viktorrhv24@gmail.com",
+      "capturadoEn": "2026-11-22T06:28:12.111Z",
+      "expiraEn": "2026-11-22T07:28:12.000Z",
+      "expirado": false,
+      "aal": "aal2",
+      "tokenEnmascarado": "eyJhbGciOi…d2Qjqg [enmascarado]"
+    }
+  }
+}

@@ -1,0 +1,303 @@
+<title>QuantumWare</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;600;700&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+  /* Layout: franjas a todo el ancho con envoltorio interior de 72rem; las vulnerabilidades se presentan como pares enfrentados vulnerable/corregido */
+  :root {
+    --fondo: #f7f8fa;
+    --superficie: #ffffff;
+    --superficie-2: #eef1f6;
+    --texto: #171c26;
+    --texto-sutil: #5a6477;
+    --borde: #d8dee9;
+    --acento: #2f4f9e;
+    --riesgo: #9a4a12;
+    --riesgo-fondo: #fdf1e7;
+    --seguro: #11605a;
+    --seguro-fondo: #e7f4f2;
+    --tipo-titulo: 'IBM Plex Sans', system-ui, sans-serif;
+    --tipo-texto: 'Source Sans 3', system-ui, sans-serif;
+    --tipo-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --fondo: #0f131b;
+      --superficie: #171d28;
+      --superficie-2: #1f2634;
+      --texto: #e8ecf3;
+      --texto-sutil: #9aa5b8;
+      --borde: #2b3443;
+      --acento: #8aa8ef;
+      --riesgo: #f0a775;
+      --riesgo-fondo: #2a1d14;
+      --seguro: #6fd3c6;
+      --seguro-fondo: #11241f;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --fondo: #0f131b;
+    --superficie: #171d28;
+    --superficie-2: #1f2634;
+    --texto: #e8ecf3;
+    --texto-sutil: #9aa5b8;
+    --borde: #2b3443;
+    --acento: #8aa8ef;
+    --riesgo: #f0a775;
+    --riesgo-fondo: #2a1d14;
+    --seguro: #6fd3c6;
+    --seguro-fondo: #11241f;
+    color-scheme: dark;
+  }
+
+  body { background: var(--fondo); color: var(--texto); font-family: var(--tipo-texto); line-height: 1.6; }
+  .banda { width: 100%; }
+  .dentro {
+    max-width: 72rem; margin: 0 auto;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 3.5rem;
+  }
+  h1, h2, h3 { font-family: var(--tipo-titulo); text-wrap: balance; margin: 0; }
+  h1 { font-size: clamp(2.1rem, 6vw, 3.4rem); font-weight: 700; letter-spacing: -0.02em; }
+  h2 { font-size: clamp(1.35rem, 3vw, 1.8rem); font-weight: 600; }
+  h3 { font-size: 1.05rem; font-weight: 600; }
+  p { margin: 0; max-width: 65ch; }
+  code, .mono { font-family: var(--tipo-mono); font-size: 0.86em; }
+  .etiqueta {
+    font-family: var(--tipo-mono); font-size: 0.72rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--texto-sutil);
+  }
+
+  nav.barra { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--superficie); border-bottom: 1px solid var(--borde); }
+  body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 25; background: var(--superficie); }
+  nav.barra .dentro { padding-block: 0.7rem; display: flex; flex-wrap: wrap; gap: 0.5rem 1.3rem; align-items: center; }
+  nav.barra strong { font-family: var(--tipo-titulo); letter-spacing: -0.01em; }
+  nav.barra a { color: var(--texto-sutil); text-decoration: none; font-size: 0.9rem; }
+  nav.barra a:hover, nav.barra a:focus-visible { color: var(--acento); text-decoration: underline; }
+
+  .heroe { background: var(--superficie); border-bottom: 1px solid var(--borde); }
+  .heroe .dentro { padding-block: 4rem 3rem; display: grid; gap: 1.5rem; }
+  .sub { font-size: 1.1rem; color: var(--texto-sutil); max-width: 60ch; }
+
+  .conmutador { display: grid; grid-template-columns: 1fr auto 1fr; gap: 0.75rem; align-items: stretch; max-width: 46rem; margin-top: 0.5rem; }
+  .conmutador > div { border: 1px solid var(--borde); border-radius: 10px; padding: 1rem; min-width: 0; }
+  .modo-v { background: var(--riesgo-fondo); border-color: color-mix(in oklab, var(--riesgo) 35%, var(--borde)); }
+  .modo-c { background: var(--seguro-fondo); border-color: color-mix(in oklab, var(--seguro) 35%, var(--borde)); }
+  .modo-v .etiqueta { color: var(--riesgo); }
+  .modo-c .etiqueta { color: var(--seguro); }
+  .flecha { display: grid; place-items: center; color: var(--texto-sutil); font-family: var(--tipo-mono); font-size: 1.4rem; }
+  @media (max-width: 620px) { .conmutador { grid-template-columns: 1fr; } .flecha { transform: rotate(90deg); } }
+
+  .rejilla { display: grid; gap: 1rem; }
+  .cols-3 { grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); }
+  .tarjeta { background: var(--superficie); border: 1px solid var(--borde); border-radius: 10px; padding: 1.2rem; min-width: 0; display: grid; gap: 0.55rem; align-content: start; }
+  .tarjeta p { font-size: 0.95rem; color: var(--texto-sutil); }
+
+  .vuln { background: var(--superficie); border: 1px solid var(--borde); border-radius: 12px; overflow: hidden; }
+  .vuln > header { padding: 1.1rem 1.2rem; border-bottom: 1px solid var(--borde); display: grid; gap: 0.3rem; }
+  .vuln > header .cwe { font-family: var(--tipo-mono); font-size: 0.78rem; color: var(--texto-sutil); }
+  .par { display: grid; grid-template-columns: 1fr 1fr; }
+  .par > div { padding: 1.1rem 1.2rem; display: grid; gap: 0.5rem; align-content: start; min-width: 0; }
+  .par > div:first-child { border-right: 1px solid var(--borde); background: var(--riesgo-fondo); }
+  .par > div:last-child { background: var(--seguro-fondo); }
+  .par h4 { margin: 0; font-family: var(--tipo-titulo); font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase; }
+  .par > div:first-child h4 { color: var(--riesgo); }
+  .par > div:last-child h4 { color: var(--seguro); }
+  .par p { font-size: 0.92rem; }
+  .donde { font-family: var(--tipo-mono); font-size: 0.78rem; color: var(--texto-sutil); word-break: break-all; }
+  @media (max-width: 680px) { .par { grid-template-columns: 1fr; } .par > div:first-child { border-right: 0; border-bottom: 1px solid var(--borde); } }
+
+  .cifras { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: 1rem; }
+  .cifra { border-left: 3px solid var(--acento); padding-left: 0.9rem; }
+  .cifra b { font-family: var(--tipo-titulo); font-size: 1.9rem; font-weight: 700; display: block; font-variant-numeric: tabular-nums; }
+  .cifra span { font-size: 0.86rem; color: var(--texto-sutil); }
+
+  table { border-collapse: collapse; width: 100%; font-size: 0.92rem; }
+  th, td { text-align: left; padding: 0.6rem 0.8rem; border-bottom: 1px solid var(--borde); vertical-align: top; }
+  th { font-family: var(--tipo-titulo); font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--texto-sutil); }
+  .desplaza { overflow-x: auto; }
+  ul { margin: 0; padding-left: 1.1rem; }
+  li { margin-bottom: 0.3rem; font-size: 0.95rem; color: var(--texto-sutil); }
+  li b { color: var(--texto); font-weight: 600; }
+  footer.pie { background: var(--superficie); border-top: 1px solid var(--borde); }
+  footer.pie .dentro { padding-block: 2.2rem; display: grid; gap: 0.4rem; }
+  footer.pie p { font-size: 0.9rem; color: var(--texto-sutil); }
+  .aviso { border: 1px dashed var(--borde); border-radius: 10px; padding: 1rem 1.2rem; background: var(--superficie-2); }
+  .aviso p { font-size: 0.92rem; }
+</style>
+
+<nav class="barra">
+  <div class="dentro">
+    <strong>QuantumWare</strong>
+    <a href="#proyecto">Proyecto</a>
+    <a href="#arquitectura">Arquitectura</a>
+    <a href="#vulnerabilidades">Vulnerabilidades</a>
+    <a href="#controles">Controles</a>
+    <a href="#pruebas">Pruebas</a>
+  </div>
+</nav>
+
+<section class="banda heroe">
+  <div class="dentro">
+    <span class="etiqueta">Laboratorio académico de ciberseguridad</span>
+    <h1>Un sistema de inventario que se puede atacar, y arreglar, con una variable</h1>
+    <p class="sub">QuantumWare es una aplicación web de inventario y pedidos construida con debilidades deliberadas en puntos concretos del código, y una segunda aplicación independiente que las ataca. La variable <code>VULN_MODE</code> conmuta el mismo endpoint entre su versión explotable y su versión corregida, de modo que cada ataque se puede ejecutar dos veces y comparar.</p>
+    <div class="conmutador">
+      <div class="modo-v">
+        <span class="etiqueta">VULN_MODE = vulnerable</span>
+        <p>La consulta se concatena, el límite de cantidad no se revalida y no se comprueba quién es el dueño del pedido. Los tres ataques funcionan.</p>
+      </div>
+      <div class="flecha" aria-hidden="true">→</div>
+      <div class="modo-c">
+        <span class="etiqueta">VULN_MODE = corregido</span>
+        <p>Consulta parametrizada, validación en el servidor y comprobación de propiedad. Los mismos tres ataques fallan, con el mismo cliente atacante.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="banda" id="proyecto">
+  <div class="dentro">
+    <h2>Qué es y para qué sirve</h2>
+    <div class="rejilla cols-3" style="margin-top:1.3rem">
+      <div class="tarjeta">
+        <h3>El problema</h3>
+        <p>Las vulnerabilidades web se explican en abstracto y se olvidan. Sin un entorno donde el ataque se vea funcionar y luego se vea bloqueado, no queda claro qué línea de código lo permitía.</p>
+      </div>
+      <div class="tarjeta">
+        <h3>La propuesta</h3>
+        <p>Dos aplicaciones separadas que se comunican por API REST: una expone la superficie de ataque, la otra la ejerce y registra la evidencia de cada intento con su código HTTP y su tiempo de respuesta.</p>
+      </div>
+      <div class="tarjeta">
+        <h3>El alcance</h3>
+        <p>Diez escenarios reproducibles: uno de funcionamiento normal, cuatro de explotación y cinco de control de acceso. Todo con datos ficticios y dentro del laboratorio.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="banda" id="arquitectura" style="background:var(--superficie-2)">
+  <div class="dentro">
+    <h2>Arquitectura</h2>
+    <p style="margin-top:0.7rem;color:var(--texto-sutil)">Tres componentes con responsabilidades separadas. La aplicación principal nunca confía en el cliente: cada token se verifica criptográficamente contra las claves públicas del proveedor de identidad.</p>
+    <div class="desplaza" style="margin-top:1.3rem">
+      <table>
+        <thead>
+          <tr><th>Componente</th><th>Función</th><th>Tecnología</th><th>Dirección local</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>Aplicación principal</b></td><td>Inventario, pedidos, pagos ficticios y los puntos vulnerables. Sirve también su interfaz compilada.</td><td class="mono">NestJS 11 · TypeScript 5.7 · React 19 · Mantine 9 · Vite 7</td><td class="mono">localhost:3000</td></tr>
+          <tr><td><b>Cliente atacante</b></td><td>Ejecuta los escenarios, la consola de solicitudes y la terminal interactiva. Guarda la bitácora de evidencias.</td><td class="mono">NestJS 11 · TypeScript · React 19</td><td class="mono">localhost:4000</td></tr>
+          <tr><td><b>Base de datos</b></td><td>Productos, pedidos, detalle, roles, invitaciones, tokens de credencial y bitácora de correo.</td><td class="mono">PostgreSQL · 17 migraciones versionadas</td><td class="mono">localhost:5432</td></tr>
+          <tr><td><b>Servicio de identidad</b></td><td>Autenticación, emisión de tokens de acceso y segundo factor TOTP. No almacena datos del negocio.</td><td class="mono">Supabase Auth · JWKS · jose 6</td><td class="mono">nube</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="banda" id="vulnerabilidades">
+  <div class="dentro">
+    <h2>Las tres vulnerabilidades, y su corrección</h2>
+    <p style="margin-top:0.7rem;color:var(--texto-sutil)">Cada debilidad está en una línea identificable. La columna izquierda es lo que ocurre con <code>VULN_MODE=vulnerable</code>; la derecha, con <code>VULN_MODE=corregido</code>.</p>
+
+    <div class="rejilla" style="margin-top:1.4rem;gap:1.3rem">
+      <article class="vuln">
+        <header>
+          <h3>Inyección SQL en la búsqueda de productos</h3>
+          <span class="cwe">CWE-89 · GET /productos/buscar · escenario PE-01</span>
+        </header>
+        <div class="par">
+          <div>
+            <h4>Vulnerable</h4>
+            <p>El término de búsqueda se concatena directamente dentro de la sentencia, así que una carga como <code>' OR '1'='1</code> altera la condición y devuelve registros que la búsqueda no debía mostrar.</p>
+            <p class="donde">productos.service.ts, líneas 206-214: la sentencia se arma uniendo cadenas.</p>
+          </div>
+          <div>
+            <h4>Corregido</h4>
+            <p>La misma consulta usa un parámetro <code>$1</code>. El motor trata la carga como texto literal, nunca como sintaxis, y la respuesta vuelve a contener solo las coincidencias reales.</p>
+            <p class="donde">productos.service.ts, línea 216: consulta parametrizada.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="vuln">
+        <header>
+          <h3>Validación que solo vivía en el cliente</h3>
+          <span class="cwe">CWE-602 · POST /pedidos · escenario PE-02</span>
+        </header>
+        <div class="par">
+          <div>
+            <h4>Vulnerable</h4>
+            <p>El límite de 10 unidades por línea se comprueba en el JavaScript de la interfaz, pero el servidor no lo repite. Una solicitud enviada desde fuera del navegador registra un pedido con 99 unidades.</p>
+            <p class="donde">pedidos.service.ts, línea 105: la comprobación del límite se omite en modo vulnerable.</p>
+          </div>
+          <div>
+            <h4>Corregido</h4>
+            <p>El servidor revalida la cantidad con su objeto de transferencia de datos y responde 400 antes de tocar la base. La integridad del pedido deja de depender del cliente que lo envía.</p>
+            <p class="donde">pedidos.service.ts, línea 105 con el modo corregido activo.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="vuln">
+        <header>
+          <h3>Acceso al pedido de otro cliente</h3>
+          <span class="cwe">BOLA / IDOR · GET /pedidos/{id} · escenario PE-03</span>
+        </header>
+        <div class="par">
+          <div>
+            <h4>Vulnerable</h4>
+            <p>El servidor comprueba que el token sea válido, pero no que el pedido pertenezca a quien lo pide. Con una sesión legítima basta cambiar el identificador para leer el pedido de otra persona.</p>
+            <p class="donde">pedidos.service.ts, líneas 246 y 426: la comprobación de propiedad se salta en modo vulnerable.</p>
+          </div>
+          <div>
+            <h4>Corregido</h4>
+            <p>Se compara el dueño del pedido con el sujeto del token y se responde 403 sin revelar nada del pedido ni de su propietario. Autenticarse deja de implicar estar autorizado.</p>
+            <p class="donde">pedidos.service.ts, líneas 246 y 426 con el modo corregido activo.</p>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="banda" id="controles" style="background:var(--superficie-2)">
+  <div class="dentro">
+    <h2>Lo que no es vulnerable</h2>
+    <p style="margin-top:0.7rem;color:var(--texto-sutil)">Las debilidades son deliberadas y acotadas. El resto de los controles funciona en los dos modos, y eso es parte de la demostración: una vulnerabilidad intencional no es una aplicación sin seguridad.</p>
+    <ul style="margin-top:1.2rem;max-width:65ch">
+      <li><b>Verificación criptográfica del token.</b> Se comprueba la firma contra las claves públicas del proveedor, el emisor, el destinatario y la expiración. Decodificar un token no es verificarlo.</li>
+      <li><b>Autorización por rol.</b> Las operaciones administrativas exigen rol de administrador y responden 403 por omisión.</li>
+      <li><b>Segundo factor obligatorio.</b> Las operaciones sensibles requieren una sesión con MFA completado, no solo un token válido.</li>
+      <li><b>Resistencia a intentos repetidos.</b> La simulación de autenticación bloquea a partir del sexto intento tras cinco fallos, y está acotada a 20 intentos como máximo.</li>
+      <li><b>Cliente atacante confinado.</b> Solo puede dirigirse al destino autorizado: la ruta se valida en el servidor, no en la interfaz, las redirecciones no se siguen y las direcciones privadas están bloqueadas.</li>
+      <li><b>Evidencias sin datos sensibles.</b> Los tokens se registran enmascarados y los datos son ficticios.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="banda" id="pruebas">
+  <div class="dentro">
+    <h2>Pruebas y evidencias</h2>
+    <div class="cifras" style="margin-top:1.3rem">
+      <div class="cifra"><b>10</b><span>escenarios del cliente atacante</span></div>
+      <div class="cifra"><b>146</b><span>pruebas automatizadas de integración</span></div>
+      <div class="cifra"><b>25</b><span>suites de extremo a extremo</span></div>
+      <div class="cifra"><b>17</b><span>migraciones versionadas</span></div>
+    </div>
+    <div class="aviso" style="margin-top:1.6rem">
+      <p>Cada ejecución guarda un archivo JSON con el escenario, el momento, el objetivo, el modo activo, la solicitud, la respuesta, el código HTTP, el tiempo en milisegundos, el resultado esperado y el obtenido. El token aparece enmascarado. Los escenarios que no pueden evaluarse se marcan como pendientes de criterio en lugar de como satisfactorios.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="pie">
+  <div class="dentro">
+    <span class="etiqueta">Proyecto final</span>
+    <p><b>Viktor Raúl Hernández Vargas</b> · Ingeniería en Desarrollo de Software</p>
+    <p>Universidad Tecmilenio · Asignatura de Ciberseguridad · Docente: Ariel Plasencia Díaz</p>
+    <p>Proyecto académico. Las vulnerabilidades son intencionales y están confinadas al laboratorio; todos los datos son ficticios.</p>
+  </div>
+</footer>

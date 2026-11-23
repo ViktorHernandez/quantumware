@@ -1,0 +1,58 @@
+{
+  "escenario": "PA-05",
+  "titulo": "Acceso con token válido pero sin permisos",
+  "ejecutadoEn": "2026-11-22T06:28:49.481Z",
+  "objetivo": "http://localhost:3000",
+  "vulnMode": "corregido",
+  "request": {
+    "metodo": "POST",
+    "url": "http://localhost:3000/productos",
+    "envioToken": true,
+    "origenToken": "cliente",
+    "tokenEnmascarado": "eyJhbGciOi…bKu18Q [enmascarado]",
+    "tokenExpiradoAlEnviar": false,
+    "cabeceras": {
+      "Authorization": "Bearer eyJhbGciOi…bKu18Q [enmascarado]"
+    }
+  },
+  "response": {
+    "status": 403,
+    "tiempoMs": 4,
+    "cuerpo": {
+      "statusCode": 403,
+      "error": "Forbidden",
+      "message": "Permisos insuficientes."
+    }
+  },
+  "statusEsperado": 403,
+  "esperado": "Responde 403 por permisos insuficientes.",
+  "cumple": true,
+  "observacion": "El servidor respondió HTTP 403 a una solicitud con token, que coincide con el resultado esperado (403).",
+  "restablecimiento": "No requiere restablecimiento; el producto no se crea.",
+  "sesiones": {
+    "cliente": {
+      "email": "smmy627@gmail.com",
+      "capturadoEn": "2026-11-22T06:27:38.175Z",
+      "expiraEn": "2026-11-22T07:27:38.000Z",
+      "expirado": false,
+      "aal": "aal1",
+      "tokenEnmascarado": "eyJhbGciOi…bKu18Q [enmascarado]"
+    },
+    "expirado": {
+      "email": "smmy627@gmail.com",
+      "capturadoEn": "2026-11-22T06:27:38.175Z",
+      "expiraEn": "2026-11-22T07:27:38.000Z",
+      "expirado": false,
+      "aal": "aal1",
+      "tokenEnmascarado": "eyJhbGciOi…bKu18Q [enmascarado]"
+    },
+    "admin": {
+      "email": "viktorrhv24@gmail.com",
+      "capturadoEn": "2026-11-22T06:28:12.111Z",
+      "expiraEn": "2026-11-22T07:28:12.000Z",
+      "expirado": false,
+      "aal": "aal2",
+      "tokenEnmascarado": "eyJhbGciOi…d2Qjqg [enmascarado]"
+    }
+  }
+}
